@@ -1,0 +1,7 @@
+# Contexto local y reglas IA (nunca en git)
+CONTEXT.md
+REGLAS.md
+.cline/
+.clinerules
+.cursor/
+.gemini/
