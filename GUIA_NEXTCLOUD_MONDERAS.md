@@ -21,7 +21,8 @@ Incluye de serie:
 | **Calendario** | Calendarios compartidos de la asociación (actividades, asambleas…) |
 | **Correo** | Leer y enviar desde `monderas@corrientelebeche.es` (o cuentas propias) |
 | **Contactos** | Agenda de la asociación |
-| **Office** | Editar Word/Excel/PowerPoint (docx/xlsx/pptx) directamente en el navegador |
+| **Fotos** | Galería de fotos de actividades |
+| ~~Office~~ | ❌ RETIRADO (10-11-2026): los documentos se editan en local (LibreOffice/Word) y se suben a la nube |
 | **Notas / Tareas / Deck** | Apuntes, listas de tareas y tablones |
 | **Formularios / Encuestas** | Formularios para socias y votaciones |
 | **Fotos** | Galería de fotos de actividades |
@@ -114,14 +115,14 @@ desde las apps de correo del móvil/ordenador, como hasta ahora.)*
   "Subir archivos") — se usa, p. ej., para recoger fotos de una actividad.
 - Norma: fotos donde salgan menores → enlace con contraseña y caducidad, no enlace abierto.
 
-### Paso 7 — Office (Word/Excel/PowerPoint en el navegador)
+### Paso 7 — Documentos de ofimática (Word/Excel/PowerPoint)
 
-- Haz **doble clic** en un `.docx`, `.xlsx`, `.pptx` o `.odt` y se abrirá el editor en la
-  misma pestaña; se guarda solo en la nube. Se puede **editar a la vez** entre varias.
-- ⚠️ **Límite práctico en nuestro NAS (2 GB de RAM):** 1–2 personas editando a la vez.
-  Si va lento o da error al abrir, esperad un poco o editad por turnos. (Para trabajos
-  pesados, se puede seguir usando LibreOffice en el ordenador.)
-- Formatos raros (p. ej. `.pages`, Publisher): descargar y abrir con el programa adecuado.
+- ❌ El **editor integrado en el navegador se ha retirado** (no iba bien en nuestro NAS).
+- Para editar: **descarga el archivo**, edítalo en el ordenador (LibreOffice, Word…) y
+  **vuelve a subirlo** (o usa la app de escritorio de Nextcloud, que sincroniza la carpeta
+  sola). La versión anterior de cada archivo queda guardada (botón "Versiones").
+- Para archivos de texto sencillos, la app **Notas** y **Texto** del propio Nextcloud
+  siguen disponibles.
 
 ### Paso 8 — Archivos grandes (vídeos, carpetas de fotos)
 
@@ -153,7 +154,7 @@ desde las apps de correo del móvil/ordenador, como hasta ahora.)*
 |---|---|
 | "No puedo entrar" | Comprueba usuario/contraseña; si la olvidaste, pide a la admin que la restablezca |
 | "No veo el calendario de actividades" | Acepta la compartición del grupo (aviso en Calendario) o pide que te añadan al grupo |
-| "No me abre un Word" | Cierra el archivo e inténtalo en otro momento (ofimática limitada a 1–2 personas) |
+| "No me abre un Word en el navegador" | El editor integrado está retirado: descarga el archivo, edítalo en el ordenador y vuélvelo a subir |
 | "No me deja subir un vídeo de 300 MB por la web" | Usa la app de escritorio/móvil (trocea la subida) |
 | "¿Dónde están mis datos?" | En el NAS de la asociación (Salobreña). Hay copia de seguridad de la base de datos semanal; la copia completa de archivos se añadirá en breve |
 | "¿Y si se rompe el NAS?" | Existen copias locales (web y BBDD); **no hay todavía copia externa**: no guardéis aquí el único ejemplar de algo irremplazable hasta avisaros de que el backup externo está listo |

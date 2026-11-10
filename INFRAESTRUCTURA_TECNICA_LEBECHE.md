@@ -20,7 +20,6 @@ todo servido desde un **NAS Synology DS223** en casa, expuesto a internet a trav
 | Barrioteca (app web / PWA) | `https://www.corrientelebeche.es/barrioteca/` | NAS `/volume1/web/barrioteca/` |
 | SLiMS (backend biblioteca) | `https://www.corrientelebeche.es/slims/` (admin `/slims/admin/`) | NAS `/volume1/web/slims/` |
 | **Nextcloud (nube)** | `https://nube.corrientelebeche.es` | Docker `nextcloud` (puerto 8087) |
-| **Nextcloud Office** | `https://office.corrientelebeche.es` | Docker `collabora` (puerto 9980) |
 | Correo de la asociación | `monderas@corrientelebeche.es` | Hostalia (MX) + Nextcloud Mail / apps |
 | Newsletter de socias | `https://www.corrientelebeche.es/newsletter/` | NAS `/volume1/web/newsletter/` (envío por CLI) |
 | Mondera's App | Google Play | NAS (CalDAV → Nextcloud, correo IMAP, File Station) |
@@ -43,7 +42,7 @@ almacenamiento ejecutada (ver sección 11).
 | CNAME | `@` | `pelotxo.synology.me` | 🟠 Proxied | Raíz (301 → /lebeche/) |
 | CNAME | `www` | `pelotxo.synology.me` | 🟠 Proxied | Canónico |
 | CNAME | `nube` | `pelotxo.synology.me` | 🟠 Proxied | Nextcloud |
-| CNAME | `office` | `pelotxo.synology.me` | 🟠 Proxied | Collabora (Nextcloud Office) |
+| CNAME | `office` | `pelotxo.synology.me` | 🟠 Proxied | ⚠️ RETIRADO (Office eliminado 10-11-2026; borrable) |
 | CNAME | `correo` | `pelotxo.synology.me` | 🟠 Proxied | ⚠️ Sin servicio (Roundcube retirado; borrable) |
 | MX | `@` (10) | `mx.corrientelebeche.es` | ⚪ | Correo (Hostalia) |
 | TXT | `@` | `v=spf1 redirect=spf.dominioabsoluto.net` | ⚪ | SPF |
@@ -125,15 +124,13 @@ almacenamiento ejecutada (ver sección 11).
 | Proyecto | Servicio | Imagen | Puerto | Estado |
 |---|---|---|---|---|
 | `/volume2/docker/nextcloud/` | `nextcloud` | `nextcloud:35.0-apache` | 8087→80 | ✅ Up |
-| ídem | `collabora` | `collabora/code:26.04.6.1.1` | 9980→9980 | ✅ Up (healthy) |
 | `/volume2/docker/roundcube/` | `roundcube` | `roundcube/roundcubemail:latest` | 8090→80 | ⏸️ Exited (retirado) |
 
 - Nextcloud: volúmenes `./html:/var/www/html`, `/volume1/nextcloud:/var/www/html/data`,
   `apache-mpm.conf` (prefork 2/1/3/8), `mem_limit 900m`, `extra_hosts host.docker.internal`.
-- Collabora: `cap_add [MKNOD, SYS_ADMIN]`, `security_opt seccomp:unconfined`,
-  `extra_params … --o:security.seccomp=false`, `PROBE_URL http://127.0.0.1:9980/livez`,
-  `mem_limit 768m`. (Sin esos ajustes, los "kit" mueren con EINVAL en este kernel ARM64.)
-- Ficheros fuente del stack: repo `G:\GITHUB\lebeche-nextcloud\docker\`.
+- **Nextcloud Office (Collabora) ELIMINADO el 10-11-2026** (contenedor, imagen, apps
+  `richdocuments`/`office` y proxy): no iba bien en este NAS. Si se reintenta, los ajustes
+  necesarios estaban en el histórico de git de `lebeche-nextcloud`.
 
 ### 4.4 Proxy inverso de DSM (Panel de control → Portal de inicio de sesión → Avanzado)
 
@@ -142,7 +139,7 @@ almacenamiento ejecutada (ver sección 11).
 | jellyfin | `https://jellyfin.pelotxo.synology.me:443` | `localhost:8096` | Let's Encrypt |
 | Web Lebeche | `https://lebeche.pelotxo.synology.me:443` | `localhost:8085` | Let's Encrypt |
 | Nextcloud Lebeche | `https://nube.corrientelebeche.es:443` | `localhost:8087` | CF Origin (comodín) |
-| Collabora Office | `https://office.corrientelebeche.es:443` | `localhost:9980` | CF Origin (comodín) |
+| ~~Collabora Office~~ | ~~`office.corrientelebeche.es`~~ | ~~9980~~ | eliminada 10-11-2026 |
 | ~~Mail Hostalia~~ | ~~`correo.corrientelebeche.es`~~ | ~~8090~~ | eliminada 10-11-2026 |
 
 - **Nota DSM 7.4:** la GUI no expone selector de certificado por regla; el cert se asigna
@@ -228,15 +225,16 @@ Detalles relevantes:
 
 ## 6. Nextcloud (ficha técnica)
 
-- **URLs:** `https://nube.corrientelebeche.es` · Office `https://office.corrientelebeche.es`
-  (subdominio interno de Collabora; no tiene login propio).
+- **URL:** `https://nube.corrientelebeche.es` · **Nextcloud Office ELIMINADO (10-11-2026)**
+  — no iba bien en este NAS; los documentos se editan en local y se suben a la nube.
 - **Versión:** Nextcloud 35.0.2 (imagen `nextcloud:35.0-apache`), PHP embebido en la imagen.
 - **Datos:** `/volume1/nextcloud` (bind mount; aún sin cuota de carpeta compartida DSM,
   cuota por usuario en Nextcloud = 20 GB). **BD:** `nextcloud` en MariaDB 10 (3307).
 - **Usuarios:** `lebeche` (administrador) y `monderas` (grupo `Monderas`; recreada el
   10-11-2026 tras un borrado desde la UI). Contraseñas en `CREDENCIALES.md`.
 - **Apps habilitadas:** Calendar, Contacts, Mail, Notes, Tasks, Deck, Talk (chat), Forms,
-  Polls, Bookmarks, Files external, Federation, Photos, Activity, richdocuments (Office).
+  Polls, Bookmarks, Files external, Federation, Photos, Activity.
+  (`richdocuments` y `office` **deshabilitadas** al retirar el Office.)
 - **Calendarios:** `lebeche`, `actividades`, `asambleas` — propiedad de `monderas` y
   **compartidos con el grupo `Monderas` (lectura/escritura)** el 10-11-2026.
 - **Archivos:** carpetas `Actas` (1,4 GB) y `Fotos` (4 GB) **migradas** desde
@@ -249,11 +247,11 @@ Detalles relevantes:
   previews limitados (2048 px / 50 MB), SMTP Hostalia para notificaciones,
   maintenance_window_start=1 (≈03:00 CET).
 - **CalDAV/CardDAV:** `https://nube.corrientelebeche.es/remote.php/dav/`.
-- **Límites conocidos:** RAM total del NAS 2 GB → la ofimática colaborativa aguanta
-  **1–2 ediciones simultáneas**; subidas web ≤ 100 MB (Cloudflare) — la app de escritorio
-  trocea; sin Full Text Search ni Recognize (pesados).
+- **Límites conocidos:** RAM total del NAS 2 GB; subidas web ≤ 100 MB (Cloudflare) — la app
+  de escritorio trocea; sin Full Text Search ni Recognize (pesados); **sin editor Office
+  integrado** (se edita en local con LibreOffice/Word).
 - **Actualizaciones:** pinnear `35.0`; al saltar de major: `docker compose pull` +
-  `occ upgrade` + verificar apps. Collabora: `pull` mensual.
+  `occ upgrade` + verificar apps.
 
 ## 7. Correo electrónico
 
@@ -323,7 +321,7 @@ Detalles relevantes:
 5. **Reapuntar el CalDAV de Mondera's App** a Nextcloud.
 6. ~~Migrar ACTAS (1,4 GB) y Fotos (4 GB) desde `homes/lebeche` a Nextcloud~~ — **hecho el
    10-11-2026** (copiadas a la cuenta `monderas`; originales conservados como respaldo).
-7. Borrar los CNAME `correo`/`webmail` de Cloudflare si se desea.
+7. Borrar los CNAME `correo`/`webmail`/`office` de Cloudflare si se desea (sin servicio).
 8. Borrar scripts de mantenimiento públicos de SLiMS al terminar la importación.
 9. (Opcional) 2FA y cambio de contraseñas por defecto en Nextcloud.
 
@@ -336,8 +334,8 @@ Detalles relevantes:
 | Barrioteca Acalencá | Biblioteca vecinal autogestionada (préstamos por escaneo) |
 | SLiMS | Software de biblioteca (PHP + MariaDB), backend de la Barrioteca |
 | CalDAV/CardDAV | Protocolos de calendario y contactos (usa Mondera's App / Nextcloud) |
-| WOPI | Protocolo de integración de Nextcloud Office con Collabora |
-| CODE | Collabora Online Development Edition (suite ofimática libre) |
+| WOPI | Protocolo de integración de Nextcloud Office con Collabora (retirado junto al Office, 10-11-2026) |
+| CODE | Collabora Online Development Edition (suite ofimática libre; retirada del NAS, 10-11-2026) |
 | HyperBackup | Copias de seguridad de Synology |
 | Snapshot Replication | Instantáneas + réplicas volumen1→volumen2 (desactivado) |
 | Cloudflare Origin Certificate | Certificado del origen (NAS) firmado por Cloudflare, modo Full (strict) |
