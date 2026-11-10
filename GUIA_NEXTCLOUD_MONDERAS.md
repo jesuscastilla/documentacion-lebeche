@@ -73,12 +73,9 @@ La persona administradora (Pelotxo) crea una cuenta por persona (nombre corto, p
 
 ### Paso 3 — Calendarios compartidos
 
-Ya existen tres calendarios: **`lebeche`**, **`actividades`** y **`asambleas`** (creados en
-la cuenta `monderas`). Faltan dos acciones:
-
-1. Compartirlos con el **grupo `Monderas`** (desde la app Calendario → botón compartir →
-   grupo Monderas → permiso "Edición").
-2. Que cada Mondera los vea al entrar (aceptar la compartición que le aparezca).
+✅ **HECHO (10-11-2026):** los calendarios **`lebeche`**, **`actividades`** y **`asambleas`**
+están compartidos con el **grupo `Monderas`** (lectura/escritura). Cuando crees las cuentas
+de las Monderas y las añadas al grupo, verán estos calendarios automáticamente.
 
 Además, cada una puede añadir el calendario a su móvil (Mondera's App o cualquier app
 CalDAV) con la URL `https://nube.corrientelebeche.es/remote.php/dav/`.
@@ -101,9 +98,10 @@ desde las apps de correo del móvil/ordenador, como hasta ahora.)*
 1. En **Archivos**, crear las carpetas comunes de la asociación (p. ej. `Actas`,
    `Documentos`, `Cartelería`, `Fotos`, `Formularios`).
 2. Compartir cada carpeta con el **grupo Monderas** (botón compartir → Monderas → edición).
-3. **Migrar lo que ya existe** en el NAS: la carpeta `Lebeche` del servidor tiene
-   `ACTAS` (1,4 GB) y `Fotos` (4 GB). Se copiarán a Nextcloud (la admin lo hace, o se sube
-   con la app de escritorio arrastrando las carpetas).
+3. ✅ **HECHO (10-11-2026):** las carpetas **`Actas` (1,4 GB)** y **`Fotos` (4 GB)** del NAS
+   (`homes/lebeche`) se han copiado a la cuenta `monderas` y se han **compartido con el
+   grupo Monderas** (lectura/escritura). Los originales siguen en el NAS como copia de
+   seguridad hasta que confirmes que está todo bien.
 4. Subir lo que cada una tenga en su ordenador/móvil (carteles, presupuestos, fotos…).
 5. La **cuota actual es de 20 GB por cuenta** (se puede ampliar si hace falta).
 

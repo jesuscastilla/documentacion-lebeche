@@ -233,12 +233,15 @@ Detalles relevantes:
 - **Versión:** Nextcloud 35.0.2 (imagen `nextcloud:35.0-apache`), PHP embebido en la imagen.
 - **Datos:** `/volume1/nextcloud` (bind mount; aún sin cuota de carpeta compartida DSM,
   cuota por usuario en Nextcloud = 20 GB). **BD:** `nextcloud` en MariaDB 10 (3307).
-- **Usuarios:** `lebeche` (administrador) y `monderas` (grupo `Monderas`). Contraseñas en
-  `CREDENCIALES.md`.
+- **Usuarios:** `lebeche` (administrador) y `monderas` (grupo `Monderas`; recreada el
+  10-11-2026 tras un borrado desde la UI). Contraseñas en `CREDENCIALES.md`.
 - **Apps habilitadas:** Calendar, Contacts, Mail, Notes, Tasks, Deck, Talk (chat), Forms,
   Polls, Bookmarks, Files external, Federation, Photos, Activity, richdocuments (Office).
-- **Calendarios:** `lebeche`, `actividades`, `asambleas` (propiedad de `monderas`;
-  pendiente compartirlos con el grupo `Monderas`).
+- **Calendarios:** `lebeche`, `actividades`, `asambleas` — propiedad de `monderas` y
+  **compartidos con el grupo `Monderas` (lectura/escritura)** el 10-11-2026.
+- **Archivos:** carpetas `Actas` (1,4 GB) y `Fotos` (4 GB) **migradas** desde
+  `homes/lebeche` a la cuenta `monderas` y **compartidas con el grupo `Monderas`**
+  (permisos 31). Los originales del NAS se conservan como respaldo temporal.
 - **Correo:** cuenta `monderas@corrientelebeche.es` configurada en la app Mail para
   `monderas` (IMAP `imap.dominioabsoluto.net:993` SSL · SMTP `smtp.dominioabsoluto.net:587`).
 - **Config clave (`config.php`):** trusted_proxies (127.0.0.1, 172.16/12, 192.168.50/24),
@@ -314,9 +317,12 @@ Detalles relevantes:
 1. Borrar las **últimas snapshots** y las **réplicas** (lo hace el usuario) → libera ~160 GB.
 2. **Mover la videoteca** (`video`, 546 GB) a volume2 con bind mount para Jellyfin.
 3. Añadir **`/volume1/nextcloud` a HyperBackup** y, en general, preparar un **backup offsite**.
-4. Crear las **cuentas de las Monderas** y compartir calendarios/carpetas con el grupo.
+4. ~~Crear las cuentas de las Monderas y compartir calendarios/carpetas con el grupo~~ —
+   **hecho el 10-11-2026**: calendarios y carpetas `Actas`/`Fotos` ya compartidos con el
+   grupo `Monderas`; quedan por crear las cuentas personales (las añade el usuario).
 5. **Reapuntar el CalDAV de Mondera's App** a Nextcloud.
-6. Migrar **ACTAS (1,4 GB) y Fotos (4 GB)** desde `homes/lebeche` a Nextcloud.
+6. ~~Migrar ACTAS (1,4 GB) y Fotos (4 GB) desde `homes/lebeche` a Nextcloud~~ — **hecho el
+   10-11-2026** (copiadas a la cuenta `monderas`; originales conservados como respaldo).
 7. Borrar los CNAME `correo`/`webmail` de Cloudflare si se desea.
 8. Borrar scripts de mantenimiento públicos de SLiMS al terminar la importación.
 9. (Opcional) 2FA y cambio de contraseñas por defecto en Nextcloud.
