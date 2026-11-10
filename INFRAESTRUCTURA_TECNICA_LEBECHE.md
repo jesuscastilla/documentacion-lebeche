@@ -27,7 +27,7 @@ todo servido desde un **NAS Synology DS223** en casa, expuesto a internet a trav
 | Barrioteca iOS | PWA | NAS |
 | DSM (administración NAS) | `https://pelotxo.synology.me:5001` | NAS |
 
-**Estado global (10-11-2026):** operativo. Nextcloud recién desplegado (nube + ofimática +
+**Estado global (10-11-2026):** operativo. Nextcloud recién desplegado (nube +
 calendario + correo); Roundcube retirado; Snapshot Replication desactivado; limpieza de
 almacenamiento ejecutada (ver sección 11).
 
@@ -49,7 +49,6 @@ almacenamiento ejecutada (ver sección 11).
 | A | `mx` / `imap` / `pop3` / `smtp` | `217.116.0.227` / `.237` / `.237` / `.228` | ⚪ | Correo |
 | A/AAAA | `pelotxo.synology.me` | DDNS de Synology | — | IP pública del NAS |
 
-- `webmail.corrientelebeche.es` **no existe** (NXDOMAIN); se usaba junto a `correo` para Roundcube.
 - **TLS:** Universal SSL de Cloudflare en el edge (Google Trust Services, autorenovable) +
   **Origin Certificate `*.corrientelebeche.es`** instalado en el NAS (válido hasta **12-09-2041**).
   Modo SSL/TLS: **Full (strict)**. Sin DNSSEC.
@@ -60,22 +59,20 @@ almacenamiento ejecutada (ver sección 11).
 - **Límite de subida de Cloudflare Free: 100 MB por petición.** Nextcloud lo sortea con
   *chunking* (app de escritorio/móvil); en la web, archivos >100 MB fallarán (413).
 - **DDNS:** `pelotxo.synology.me` (cliente DDNS de DSM) apunta a la IP pública de casa.
-- Acceso público verificado el 10-11-2026: `www`, `nube` y `office` responden 200 desde internet.
+- Acceso público verificado el 10-11-2026: `www`, `nube` responden 200 desde internet.
 
 ## 3. NAS Synology DS223
 
 - **Modelo:** DS223 (ARM64 `rtd1619b`), **DSM 7.4.1-90080 Update 1**, kernel 5.10.55+.
-- **RAM:** 2 GB (no ampliable). Tras desplegar Nextcloud+Collabora: ~1.056 MB usados,
+- **RAM:** 2 GB (no ampliable). Tras desplegar Nextcloud: ~1.056 MB usados,
   ~474 MB disponibles + 2 GB de swap. **Es el principal cuello de botella.**
 - **Almacenamiento (Btrfs):**
 
 | Volumen | Tamaño | Usado | Libre | Contenido principal |
 |---|---|---|---|---|
-| volume1 | 885 GB | 726 GB (83 %) | 160 GB | `web` (350 MB), `homes` (165 GB), `video` (546 GB), `music` (6,9 GB), `photo`, `photos`, `Descargas` |
-| volume2 | 1,8 TB | 733 GB (42 %) | 1,1 TB | réplicas (`*-1`), `Backup_NAS`, `docker` |
+| volume1 | 885 GB | 726 GB (83 %) | 160 GB | `web` (350 MB), `music` (6,9 GB), `Descargas` |
+| volume2 | 1,8 TB | 733 GB (42 %) | 1,1 TB | `Backup_NAS`,`video` (546 GB) `docker` |
 
-- **Datos de la asociación en `homes/lebeche`:** ACTAS 1,4 GB · Fotos 4 GB (pendientes de
-  migrar a Nextcloud).
 - **`video` (546 GB):** videoteca personal (Jellyfin) en volume1; **pendiente de mover a
   volume2** sin romper Jellyfin (bind mount `/volume1/video` → `/volume2/video`).
 - Tras vaciar las papeleras (160 GB + 161 GB de réplica) el espacio solo se libera al
@@ -150,10 +147,9 @@ almacenamiento ejecutada (ver sección 11).
 
 ### 4.5 Paquetes instalados (resumen)
 
-WebStation, PHP8.2, PHP8.3, Apache2.4, MariaDB10, phpMyAdmin, ContainerManager, HyperBackup,
-SnapshotReplication (programación **desactivada**), ReplicationService, SynoFinder
+WebStation, PHP8.2, PHP8.3, Apache2.4, MariaDB10, phpMyAdmin, ContainerManager, HyperBackup, ReplicationService, SynoFinder
 (Universal Search, desenmascarado: necesario si se reinstala Synology Drive), Jellyfin +
-ffmpeg8 + synocli-videodriver + CodecPack, redis, r8152 (USB 2,5G), Node.js_v22
+ffmpeg8 + synocli-videodriver + CodecPack, r8152 (USB 2,5G), Node.js_v22
 (dependencia de SynologyApplicationService), Perl, Python2, TextEditor, USBCopy, ScsiTarget,
 LogCenter, OAuthService, QuickConnect, SecureSignIn, SMBService, StorageManager, FileStation,
 SupportService, SynoAnalytics, SynoOnlinePack_v2.
@@ -232,9 +228,15 @@ Detalles relevantes:
   cuota por usuario en Nextcloud = 20 GB). **BD:** `nextcloud` en MariaDB 10 (3307).
 - **Usuarios:** `lebeche` (administrador) y `monderas` (grupo `Monderas`; recreada el
   10-11-2026 tras un borrado desde la UI). Contraseñas en `CREDENCIALES.md`.
-- **Apps habilitadas:** Calendar, Contacts, Mail, Notes, Tasks, Deck, Talk (chat), Forms,
-  Polls, Bookmarks, Files external, Federation, Photos, Activity.
-  (`richdocuments` y `office` **deshabilitadas** al retirar el Office.)
+- **Apps habilitadas (44):** Calendar, Contacts, Mail, Tasks, Forms, Polls, Photos, Activity
+  + núcleo (Files, DAV, Sharing, Versiones, Papelera, Visor, 2FA...).
+  **Eliminadas (10-11-2026):** `notes`, `deck`, `spreed` (Talk), `bookmarks`, `richdocuments`.
+  **Deshabilitadas:** `office`, `federation`, `recommendations`, `related_resources`,
+  `weather_status`, `user_status`, `support`, `survey_client`, `webhook_listeners`,
+  `contactsinteraction`, `files_external`, `admin_audit`, `encryption`, `serverinfo`,
+  `suspicious_login`, `systemtags`, `twofactor_nextcloud_notification`, `user_ldap`,
+  `nextcloud_announcements`. No deshabilitables (núcleo): `federatedfilesharing`,
+  `cloud_federation_api`, `lookup_server_connector`, `profile`, `workflowengine`.
 - **Calendarios:** `lebeche`, `actividades`, `asambleas` — propiedad de `monderas` y
   **compartidos con el grupo `Monderas` (lectura/escritura)** el 10-11-2026.
 - **Archivos:** carpetas `Actas` (1,4 GB) y `Fotos` (4 GB) **migradas** desde

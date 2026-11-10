@@ -23,9 +23,8 @@ Incluye de serie:
 | **Contactos** | Agenda de la asociación |
 | **Fotos** | Galería de fotos de actividades |
 | ~~Office~~ | ❌ RETIRADO (10-11-2026): los documentos se editan en local (LibreOffice/Word) y se suben a la nube |
-| **Notas / Tareas / Deck** | Apuntes, listas de tareas y tablones |
+| **Tareas** | Listas de tareas |
 | **Formularios / Encuestas** | Formularios para socias y votaciones |
-| **Fotos** | Galería de fotos de actividades |
 
 ## 2. Cómo entrar
 
@@ -121,8 +120,7 @@ desde las apps de correo del móvil/ordenador, como hasta ahora.)*
 - Para editar: **descarga el archivo**, edítalo en el ordenador (LibreOffice, Word…) y
   **vuelve a subirlo** (o usa la app de escritorio de Nextcloud, que sincroniza la carpeta
   sola). La versión anterior de cada archivo queda guardada (botón "Versiones").
-- Para archivos de texto sencillos, la app **Notas** y **Texto** del propio Nextcloud
-  siguen disponibles.
+- Para apuntes rapidos sigue estando la app **Texto** del propio Nextcloud.
 
 ### Paso 8 — Archivos grandes (vídeos, carpetas de fotos)
 
