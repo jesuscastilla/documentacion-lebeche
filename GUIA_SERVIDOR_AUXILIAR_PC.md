@@ -308,6 +308,6 @@ cd /tmp/lebeche/<servicio>/ && /tmp/dc pull && /tmp/dc up -d
 - [x] OnlyOffice desplegado y con healthcheck OK (público: `https://office.corrientelebeche.es`).
 - [x] Talk HPB desplegado (sin NATS); HASH_KEY/BLOCK_KEY/SHARED_SECRET en CREDENCIALES.md.
 - [x] Proxy inverso DSM: `office` y `signaling` → 192.168.50.95 (w3conf + HSTS + `/spreed` con Upgrade fijo).
-- [x] CNAME en Cloudflare: `office` → Proxied. ⬜ **`signaling` → Proxied (PENDIENTE, lo crea el usuario)**.
+- [x] CNAME en Cloudflare: `office` y `signaling` → Proxied (verificado desde internet).
 - [x] OnlyOffice habilitado en Nextcloud y verificado (`onlyoffice:documentserver --check`).
-- [ ] `talk:signaling:add` hecho y verificado (esperando el CNAME `signaling`).
+- [x] `talk:signaling:add` hecho y verificado (`--verify` OK; WebSocket público 101).
