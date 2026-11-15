@@ -52,13 +52,18 @@ ssh lebeche@192.168.50.95    # contraseña estándar de la asociación
 ### Docker Compose (binario suelto)
 
 ZimaOS trae el motor Docker pero **no** el plugin `compose` del CLI (y el sistema de archivos
-raíz es de solo lectura). Se usa el binario suelto (persiste solo hasta el próximo reinicio):
+raíz es de solo lectura). El binario se instala una vez en una partición persistente:
 
 ```bash
-curl -fsSL https://github.com/docker/compose/releases/latest/download/docker-compose-linux-x86_64 -o /tmp/dc \
-  && chmod +x /tmp/dc && /tmp/dc version
-# usar como: /tmp/dc -f <compose.yaml> up -d
+sudo mkdir -p /mnt/overlay/lebeche-tools
+sudo curl -fsSL https://github.com/docker/compose/releases/latest/download/docker-compose-linux-x86_64 -o /mnt/overlay/lebeche-tools/dc
+sudo chmod +x /mnt/overlay/lebeche-tools/dc
+/mnt/overlay/lebeche-tools/dc version
+# usar como: /mnt/overlay/lebeche-tools/dc -f <compose.yaml> up -d
 ```
+
+> `/mnt/overlay` (sda7) es la partición persistente de ZimaOS para cambios de sistema; ahí
+> sí se puede ejecutar. `/tmp` es tmpfs (se borra al reiniciar) y `/DATA` está protegido.
 
 ## 3.1 Notas reales de la instalación (ZimaOS, 16-11-2026)
 
@@ -66,7 +71,12 @@ curl -fsSL https://github.com/docker/compose/releases/latest/download/docker-com
   se eligió `.95` (junto al NAS .93/.94).
 - **`/DATA` está protegido**: desde SSH no se puede `chown`/`chmod`/escribir según qué rutas
   (guard de ZimaOS). Para datos persistentes de contenedores usa **volúmenes nombrados de
-  Docker** (los gestiona el daemon, no la shell). Los ficheros `compose.yaml` van en `/tmp`.
+  Docker** (los gestiona el daemon, no la shell).
+- **Persistencia tras reinicios** (verificado 16-11-2026): `/var/lib/docker` está en el disco
+  (sda8) → contenedores y volúmenes sobreviven; docker arranca en el boot y levanta los
+  contenedores solos (`restart: unless-stopped`). El compose y los `compose.yaml` viven en
+  `/mnt/overlay/lebeche-tools/` (persistente). Tras un reinicio **no hay que hacer nada**;
+  para actualizar/recrear: `/mnt/overlay/lebeche-tools/lebeche-up.sh`.
 - **UI de ZimaOS**: `http://192.168.50.95` (puerto 80, solo LAN). SSH se activa en
   Settings → General.
 - **Aviso cosmético** de Docker (`/DATA/.docker/config.json: permission denied`): inofensivo.
@@ -102,17 +112,16 @@ ufw enable
 Crea la estructura en el PC:
 
 ```bash
-mkdir -p /tmp/lebeche/{onlyoffice,collabora,talk}
+mkdir -p /mnt/overlay/lebeche-tools/compose/{onlyoffice,talk}
 ```
 
-> Los `compose.yaml` se ejecutan con `/tmp/dc -f ...`. También puedes crear los contenedores
-> desde la UI de ZimaOS (Apps → “+” → Custom / importar compose).
-> Tras un reinicio del PC, vuelve a descargar `/tmp/dc` (ver §3) y recrea los compose en `/tmp`
-> (los datos de OnlyOffice viven en un volumen nombrado, no se pierden).
+> Los `compose.yaml` se ejecutan con `/mnt/overlay/lebeche-tools/dc -f ...` (persistente).
+> Atajo para levantar todo: `/mnt/overlay/lebeche-tools/lebeche-up.sh`.
+> También puedes crear los contenedores desde la UI de ZimaOS (Apps → “+” → Custom).
 
 ### 4.1 Office — opción A: OnlyOffice Document Server (recomendada con 16 GB)
 
-`/tmp/lebeche/onlyoffice/compose.yaml`:
+`/mnt/overlay/lebeche-tools/compose/onlyoffice/compose.yaml`:
 
 ```yaml
 services:
@@ -132,13 +141,13 @@ volumes:
 ```
 
 ```bash
-cd /tmp/lebeche/onlyoffice && /tmp/dc up -d
+cd /mnt/overlay/lebeche-tools/compose/onlyoffice && /mnt/overlay/lebeche-tools/dc up -d
 curl http://192.168.50.95:9980/healthcheck   # esperar "true" (tarda 1-2 min la primera vez)
 ```
 
 ### 4.2 Office — opción B: Collabora CODE (más ligera)
 
-`/tmp/lebeche/collabora/compose.yaml`:
+`/mnt/overlay/lebeche-tools/compose/collabora/compose.yaml`:
 
 ```yaml
 services:
@@ -155,7 +164,7 @@ services:
 ```
 
 ```bash
-cd /tmp/lebeche/collabora && /tmp/dc up -d
+cd /mnt/overlay/lebeche-tools/compose/collabora && /mnt/overlay/lebeche-tools/dc up -d
 curl http://192.168.50.95:9980/hosting/discovery   # devuelve XML si está listo
 ```
 
@@ -166,7 +175,7 @@ curl http://192.168.50.95:9980/hosting/discovery   # devuelve XML si está listo
 
 Un solo servidor no necesita NATS (es solo para clustering). Backend HTTP directo contra Nextcloud.
 
-`/tmp/lebeche/talk/compose.yaml`:
+`/mnt/overlay/lebeche-tools/compose/talk/compose.yaml`:
 
 ```yaml
 services:
@@ -186,7 +195,7 @@ services:
 ```
 
 ```bash
-cd /tmp/lebeche/talk && /tmp/dc up -d
+cd /mnt/overlay/lebeche-tools/compose/talk && /mnt/overlay/lebeche-tools/dc up -d
 docker logs talk-hpb   # debe acabar con "Listening on 0.0.0.0:8080"
 ```
 
@@ -280,7 +289,7 @@ sudo docker exec -u www-data nextcloud php occ talk:signaling:list
 - **Contenedores** (por SSH como `lebeche`):
 
 ```bash
-cd /tmp/lebeche/<servicio>/ && /tmp/dc pull && /tmp/dc up -d
+cd /mnt/overlay/lebeche-tools/compose/<servicio>/ && /mnt/overlay/lebeche-tools/dc pull && /mnt/overlay/lebeche-tools/dc up -d
 ```
 
 - Actualizar los contenedores **una vez al mes** (OnlyOffice y el HPB se actualizan a menudo).
@@ -304,7 +313,8 @@ cd /tmp/lebeche/<servicio>/ && /tmp/dc pull && /tmp/dc up -d
 ## 8. Checklist rápido
 
 - [x] ZimaOS instalada en el SSD + SSH activado + IP fija 192.168.50.95.
-- [x] Docker OK sin sudo (usuario `lebeche`) + binario `/tmp/dc` (compose) descargado.
+- [x] Docker OK sin sudo (usuario `lebeche`) + binario `/mnt/overlay/lebeche-tools/dc` (compose) persistente.
+- [x] Persistencia garantizada: contenedores autoarrancan tras reinicio (`unless-stopped` + docker en boot); compose + `lebeche-up.sh` en `/mnt/overlay/lebeche-tools/`.
 - [x] OnlyOffice desplegado y con healthcheck OK (público: `https://office.corrientelebeche.es`).
 - [x] Talk HPB desplegado (sin NATS); HASH_KEY/BLOCK_KEY/SHARED_SECRET en CREDENCIALES.md.
 - [x] Proxy inverso DSM: `office` y `signaling` → 192.168.50.95 (w3conf + HSTS + `/spreed` con Upgrade fijo).
