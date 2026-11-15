@@ -162,38 +162,39 @@ curl http://192.168.50.95:9980/hosting/discovery   # devuelve XML si está listo
 > Elegir A o B (no las dos a la vez: comparten el puerto 9980). OnlyOffice soporta más
 > formatos y va sobrada con 16 GB; Collabora consume menos.
 
-### 4.3 Talk HPB (señalización para grupos) + NATS
+### 4.3 Talk HPB (señalización) — sin NATS (desplegado 16-11-2026)
+
+Un solo servidor no necesita NATS (es solo para clustering). Backend HTTP directo contra Nextcloud.
 
 `/tmp/lebeche/talk/compose.yaml`:
 
 ```yaml
 services:
-  nats:
-    image: nats:latest
-    container_name: talk-nats
-    restart: unless-stopped
   signaling:
     image: strukturag/nextcloud-spreed-signaling:latest
     container_name: talk-hpb
     restart: unless-stopped
-    depends_on: [nats]
     ports:
       - "192.168.50.95:8081:8080"
     environment:
-      - NATS_URL=nats://talk-nats:4222
-      - SIGNALING_BACKEND=nats://talk-nats:4222
-      - SIGNALING_LISTEN=0.0.0.0:8080
+      - HTTP_LISTEN=0.0.0.0:8080
+      - HASH_KEY=<64 hex>          # 32 o 64 bytes
+      - BLOCK_KEY=<32 hex>         # 16, 24 o 32 bytes (¡no 64!)
+      - BACKENDS=backend1
+      - BACKEND_BACKEND1_URLS=https://nube.corrientelebeche.es
+      - BACKEND_BACKEND1_SHARED_SECRET=<secreto para talk:signaling:add>
 ```
 
 ```bash
 cd /tmp/lebeche/talk && /tmp/dc up -d
-# generar el secreto de firma (se usa al conectar Talk):
-docker exec -it talk-hpb spreed-signaling -signaling-secret
-# (si el binario no está en ese path, ver "docker exec talk-hpb ls /usr/bin | grep spreed")
+docker logs talk-hpb   # debe acabar con "Listening on 0.0.0.0:8080"
 ```
 
-> El TURN (coturn) se queda en el NAS: ya está configurado y verificado. El HPB solo se
-> ocupa de la señalización de los grupos.
+- Los secretos (HASH_KEY, BLOCK_KEY, SHARED_SECRET) se generan **una vez** y viven en las
+  variables de entorno: persisten entre reinicios (no usar `-signaling-secret`, que cambia
+  en cada arranque).
+- El TURN (coturn) se queda en el NAS: ya está configurado y verificado. El HPB solo se
+  ocupa de la señalización de los grupos.
 
 ## 5. Publicar y conectar con el NAS
 
@@ -203,11 +204,32 @@ Panel de control → Portal de inicio de sesión → Avanzado → Proxy inverso:
 
 | Origen | Destino | Certificado |
 |---|---|---|
-| `office.corrientelebeche.es` : 443 | `http://192.168.50.95:9980` | CF Origin (comodín) |
-| `signaling.corrientelebeche.es` : 443 | `http://192.168.50.95:8081` | CF Origin (comodín) |
+| `office.corrientelebeche.es` : 443 | `http://192.168.50.95:9980` | origen `pelotxo.synology.me` |
+| `signaling.corrientelebeche.es` : 443 | `http://192.168.50.95:8081` | origen `pelotxo.synology.me` |
 
-(Recordatorio: en DSM 7.4 el certificado se asigna copiando los .pem en
-`/usr/syno/etc/www/certificate/ReverseProxy_<uuid>/` y `nginx -s reload`; ver GUIA_DESPLIEGUE de lebeche-nextcloud.)
+**Notas reales (DSM 7.4, aplicado 16-11-2026):**
+
+- Las reglas se renderizan en `/usr/local/etc/nginx/sites-available/<uuid>.w3conf`
+  (enlazado como `sites-enabled/server.ReverseProxy.conf`). Editar
+  `/usr/syno/etc/www/ReverseProxy.json` **no basta** con `nginx -s reload`; los bloques
+  `server{}` se añadieron directamente al w3conf y se recargó. (Si se toca el proxy desde
+  la UI de DSM, se regenera el w3conf y se perderían los cambios a mano.)
+- El certificado de origen es el de `pelotxo.synology.me` (Cloudflare en modo **Full**, no
+  valida el nombre del origen); los .pem se copian a
+  `/usr/syno/etc/www/certificate/ReverseProxy_<uuid>/` con su `cert.conf`.
+- **Ojo con WebSocket**: este nginx de DSM **elimina la cabecera `Upgrade` del cliente**.
+  Para el HPB hay que fijarla solo en la ruta `/spreed`:
+
+```nginx
+location /spreed {
+    proxy_set_header Upgrade "websocket";
+    proxy_set_header Connection "Upgrade";
+    # resto igual: proxy_pass http://192.168.50.95:8081; timeouts 3600
+}
+```
+
+- HSTS añadido como `add_header Strict-Transport-Security "max-age=15552000" always;`
+  en los bloques `office`, `signaling` y `nube` (aviso de administración resuelto).
 
 ### 5.2 DNS en Cloudflare
 
@@ -218,36 +240,38 @@ Panel de control → Portal de inicio de sesión → Avanzado → Proxy inverso:
 
 - Cache Rule: **Bypass** para ambos subdominios.
 
-### 5.3 Activar el Office en Nextcloud
+### 5.3 Activar el Office en Nextcloud (hecho: OnlyOffice)
 
-**Con OnlyOffice (opción A):**
 ```bash
+sudo docker exec -u www-data nextcloud php occ app:install onlyoffice
 sudo docker exec -u www-data nextcloud php occ app:enable onlyoffice
-# Luego en la web: Ajustes de administración → OnlyOffice →
-#   Dirección del Document Server: https://office.corrientelebeche.es
-#   Secreto JWT: el mismo que pusiste en el compose
+sudo docker exec -u www-data nextcloud php occ config:app:set onlyoffice DocumentServerUrl --value="https://office.corrientelebeche.es"
+sudo docker exec -u www-data nextcloud php occ config:app:set onlyoffice jwt_secret --value=<JWT_SECRET del compose>
+sudo docker exec -u www-data nextcloud php occ onlyoffice:documentserver --check
+# → "Document server https://office.corrientelebeche.es/ version X is successfully connected"
 ```
 
-**Con Collabora (opción B):**
-```bash
-sudo docker exec -u www-data nextcloud php occ app:enable richdocuments
-sudo docker exec -u www-data nextcloud php occ config:app:set richdocuments wopi_url --value=https://office.corrientelebeche.es
-```
+Collabora (opción B) quedó descartado en el NAS por rendimiento; si algún día se prefiere
+CODE en el PC: `app:enable richdocuments` + `config:app:set richdocuments wopi_url`.
 
 ### 5.4 Conectar el HPB a Talk
 
 ```bash
-# en el NAS, con el secreto que generó el contenedor:
+# en el NAS, con BACKEND_BACKEND1_SHARED_SECRET del compose del HPB:
 sudo docker exec -u www-data nextcloud php occ talk:signaling:add \
-  https://signaling.corrientelebeche.es/ <SECRETO_HPB> --verify
+  https://signaling.corrientelebeche.es/ <SHARED_SECRET> --verify
 sudo docker exec -u www-data nextcloud php occ talk:signaling:list
 ```
 
+> Requiere el CNAME `signaling` en Cloudflare (`--verify` sale a internet).
+
 ### 5.5 Verificación final
 
-- Abrir un .docx/.xlsx en Nextcloud → se abre el editor (A o B).
-- `curl -s https://office.corrientelebeche.es/healthcheck` (OnlyOffice) o `/hosting/discovery` (Collabora).
-- Crear una conversación de Talk con 5+ personas y comprobar que la señalización usa el HPB
+- `curl -s https://office.corrientelebeche.es/healthcheck` → `true`.
+- `curl -s https://signaling.corrientelebeche.es/api/v1/welcome` → `{"nextcloud-spreed-signaling":"Welcome",...}`.
+- WebSocket: `curl -o /dev/null -w "%{http_code}" -H "Connection: Upgrade" -H "Upgrade: websocket" ... https://signaling.corrientelebeche.es/spreed` → `101` (si diera 400/000, revisar las cabeceras fijas de `/spreed` en el w3conf).
+- Abrir un .docx/.xlsx en Nextcloud → se abre el editor.
+- Conversación de Talk con 5+ personas y comprobar señalización por el HPB
   (en el PC: `docker logs -f talk-hpb`).
 
 ## 6. Mantenimiento
@@ -273,16 +297,17 @@ cd /tmp/lebeche/<servicio>/ && /tmp/dc pull && /tmp/dc up -d
 | Office lento al inicio | primera carga de OnlyOffice | normal; esperar el healthcheck |
 | Talk sigue usando el NAS | signaling no verificado | revisar `talk:signaling:list` y `--verify` |
 | 502 desde internet | proxy DSM o DNS | comprobar CNAME `office`/`signaling` y la regla de proxy |
+| WebSocket de Talk da 400/000 | nginx de DSM elimina la cabecera `Upgrade` del cliente | cabeceras fijas `Upgrade`/`Connection` solo en `location /spreed` del w3conf |
 | No llega al PC desde el NAS | IP o firewall | `ping 192.168.50.95`, `ufw status` |
 | 100 Mbps saturados | transferencias internas grandes | normal para office/talk; los archivos grandes van por SMB del NAS |
 
 ## 8. Checklist rápido
 
-- [ ] ZimaOS instalada en el SSD + SSH activado + IP fija 192.168.50.95.
-- [ ] Docker OK sin sudo (usuario `lebeche`) + binario `/tmp/dc` (compose) descargado.
-- [ ] OnlyOffice **o** Collabora desplegado y con healthcheck OK.
-- [ ] Talk HPB + NATS desplegados; secreto generado y guardado en CREDENCIALES.md.
-- [ ] Proxy inverso DSM: `office` (y `signaling`) → IP del PC.
-- [ ] CNAME en Cloudflare: `office` (y `signaling`) → Proxied + Bypass.
-- [ ] Office habilitado en Nextcloud y probado con un .docx.
-- [ ] `talk:signaling:add` hecho y verificado.
+- [x] ZimaOS instalada en el SSD + SSH activado + IP fija 192.168.50.95.
+- [x] Docker OK sin sudo (usuario `lebeche`) + binario `/tmp/dc` (compose) descargado.
+- [x] OnlyOffice desplegado y con healthcheck OK (público: `https://office.corrientelebeche.es`).
+- [x] Talk HPB desplegado (sin NATS); HASH_KEY/BLOCK_KEY/SHARED_SECRET en CREDENCIALES.md.
+- [x] Proxy inverso DSM: `office` y `signaling` → 192.168.50.95 (w3conf + HSTS + `/spreed` con Upgrade fijo).
+- [x] CNAME en Cloudflare: `office` → Proxied. ⬜ **`signaling` → Proxied (PENDIENTE, lo crea el usuario)**.
+- [x] OnlyOffice habilitado en Nextcloud y verificado (`onlyoffice:documentserver --check`).
+- [ ] `talk:signaling:add` hecho y verificado (esperando el CNAME `signaling`).
