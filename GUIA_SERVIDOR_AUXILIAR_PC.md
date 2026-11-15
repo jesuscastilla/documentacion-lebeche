@@ -112,7 +112,7 @@ mkdir -p /tmp/lebeche/{onlyoffice,collabora,talk}
 
 ### 4.1 Office — opción A: OnlyOffice Document Server (recomendada con 16 GB)
 
-`~/lebeche/onlyoffice/compose.yaml`:
+`/tmp/lebeche/onlyoffice/compose.yaml`:
 
 ```yaml
 services:
@@ -138,7 +138,7 @@ curl http://192.168.50.95:9980/healthcheck   # esperar "true" (tarda 1-2 min la 
 
 ### 4.2 Office — opción B: Collabora CODE (más ligera)
 
-`~/lebeche/collabora/compose.yaml`:
+`/tmp/lebeche/collabora/compose.yaml`:
 
 ```yaml
 services:
@@ -164,7 +164,7 @@ curl http://192.168.50.95:9980/hosting/discovery   # devuelve XML si está listo
 
 ### 4.3 Talk HPB (señalización para grupos) + NATS
 
-`~/lebeche/talk/compose.yaml`:
+`/tmp/lebeche/talk/compose.yaml`:
 
 ```yaml
 services:
