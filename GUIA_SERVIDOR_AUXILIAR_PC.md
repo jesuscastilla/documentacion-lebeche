@@ -1,9 +1,10 @@
 # Guía: servidor auxiliar para Lebeche (PC i3-3240T · 16 GB · 100 Mbps)
 
-> Fecha: 15-11-2026 · Complemento del NAS Synology DS223.
+> Fecha: 15-11-2026 · Actualizado 16-11-2026 (instalación con **ZimaOS**).
+> Complemento del NAS Synology DS223.
 > Objetivo: ejecutar los servicios pesados que el NAS (2 GB de RAM) no puede mover:
-> **Office (OnlyOffice/Collabora)**, **Talk HPB (señalización)** y Redis. Los datos siguen
-> en el NAS; el PC solo ejecuta servicios.
+> **Office (OnlyOffice/Collabora)** y **Talk HPB (señalización + NATS)**. Redis ya corre
+> en el NAS. Los datos siguen en el NAS; el PC solo ejecuta servicios.
 
 ## 1. Requisitos
 
@@ -12,88 +13,66 @@
 | Disco | **SSD SATA 120 GB** | 240 GB (más margen) |
 | Red | Ethernet 100 Mbps (la del equipo) | — |
 | Instalación | Pendrive USB 8 GB | — |
-| Sistema | Ubuntu Server 24.04 LTS | Debian 12 también vale |
-| Monitor + teclado | Solo para instalar | Después se gestiona por SSH |
+| Sistema | **ZimaOS** (x86_64, basada en Debian) | — |
+| Monitor + teclado | Solo para instalar | Después se gestiona por SSH/UI |
 
 - **No hace falta disco grande**: el sistema y los contenedores ocupan 25–40 GB; los datos
   viven en el NAS. Evita arrancar desde USB para un servidor 24/7 (se desgastan).
 - Consumo: ~25–35 W en reposo (i3-3240T, 35 W TDP).
 - La caja grande se puede ocultar (armario ventilado) o cambiar por una mini-torre mATX (~20-40 €).
 
-## 2. Instalar Ubuntu Server 24.04 LTS
+## 2. Instalar ZimaOS
 
-1. Descarga la ISO: https://ubuntu.com/download/server
-2. Graba la ISO en el pendrive con **Rufus** (Windows) o balenaEtcher.
+1. Descarga la ISO x86_64 desde https://github.com/IceWhaleTech/ZimaOS-Releases/releases
+   (el fichero `ZimaOS-x86_64-x.y.z.iso` del último release).
+2. Graba la ISO en el pendrive con **Rufus** (Windows). Si pregunta el modo, elige
+   "Write in DD Image mode".
 3. Arranca el PC desde el USB (tecla F2/F11/F12/DEL según placa, elige el USB).
-4. Instalación guiada:
-   - Idioma y teclado: Español.
-   - Red: DHCP (ya pondremos IP fija).
-   - Disco: **"Use an entire disk"** sobre el SSD (borra todo el disco, es lo correcto).
-   - Perfil: nombre `lebeche`, servidor `lebeche-pc`, usuario **`lebeche`**,
-     contraseña la estándar de la asociación (o una nueva, apúntala en `CREDENCIALES.md`).
-   - **Marca "Install OpenSSH server"** ✅ (imprescindible).
-   - Sin snaps adicionales (puedes dejar "Featured server snaps" vacío).
-5. Reinicia y quita el pendrive. Ya no necesitas monitor: todo por SSH.
+4. El instalador de ZimaOS instala automáticamente sobre el disco elegido (el SSD).
+   Tarda unos minutos y reinicia solo. Quita el pendrive en el reinicio.
+5. Configuración inicial (desde otro equipo de la LAN): abre `http://<IP-del-PC>` (puerto 80)
+   y completa el asistente: crea la cuenta de administración con la contraseña estándar de la
+   asociación (**apúntala en `CREDENCIALES.md`**) y zona horaria Europe/Madrid.
+6. En **Settings (Ajustes) → General**: activa **SSH** y renombra el equipo a `lebeche-pc`.
+
+> La IP del equipo se ve en el propio instalador, en el router o con `ip a`.
+> Para el resto de la guía usaremos la IP fija **192.168.50.20**.
 
 ## 3. Primeros pasos por SSH (desde el PC de Pelotxo)
 
 ```bash
-# averiguar la IP del equipo (en el router o con "ip a" en el propio PC)
-ssh lebeche@192.168.50.XX
-
-# actualizar
-sudo apt update && sudo apt full-upgrade -y
+# averiguar la IP (instalador, router o "ip a")
+ssh root@192.168.50.20    # contraseña: la que pusiste en el asistente
 ```
+
+> ZimaOS ya trae **Docker + Docker Compose** instalados de fábrica:
+> `docker --version && docker compose version`. No hay que instalar nada más.
+> (ZimaOS está basada en Debian; por SSH entras como **root**, sin `sudo`.)
 
 ### IP fija (recomendado: reserva DHCP en el router)
 
-En el router, reserva la IP **192.168.50.20** para la MAC del PC (suele ser lo más simple).
-Alternativa con netplan (`/etc/netplan/50-cloud-init.yaml`):
+En el router, reserva la IP **192.168.50.20** para la MAC del PC (lo más simple).
+Alternativa en la propia UI de ZimaOS: **Settings → Network → Editar → Static IP**
+(IP 192.168.50.20/24, gateway 192.168.50.1, DNS 1.1.1.1).
 
-```yaml
-network:
-  version: 2
-  ethernets:
-    eno1:                      # comprueba el nombre con "ip a"
-      dhcp4: no
-      addresses: [192.168.50.20/24]
-      routes:
-        - to: default
-          via: 192.168.50.1
-      nameservers:
-        addresses: [1.1.1.1, 8.8.8.8]
-```
+### Actualización del sistema
 
-```bash
-sudo netplan apply
-ip a   # verificar 192.168.50.20
-```
-
-### Instalar Docker (oficial) + Compose
-
-```bash
-sudo apt install -y ca-certificates curl
-sudo install -m 0755 -d /etc/apt/keyrings
-sudo curl -fsSL https://download.docker.com/linux/ubuntu/gpg -o /etc/apt/keyrings/docker.asc
-sudo chmod a+r /etc/apt/keyrings/docker.asc
-echo "deb [arch=$(dpkg --print-architecture) signed-by=/etc/apt/keyrings/docker.asc] https://download.docker.com/linux/ubuntu $(. /etc/os-release && echo $VERSION_CODENAME) stable" | sudo tee /etc/apt/sources.list.d/docker.list > /dev/null
-sudo apt update && sudo apt install -y docker-ce docker-ce-cli containerd.io docker-buildx-plugin docker-compose-plugin
-sudo usermod -aG docker lebeche
-newgrp docker   # o cierra y abre la sesión SSH
-docker --version && docker compose version
-```
+- UI: **Settings → Update** (se pueden activar actualizaciones automáticas; al actualizar,
+  ZimaOS reinicia y los contenedores vuelven solos con `restart: unless-stopped`).
+- Por SSH: `apt update && apt full-upgrade -y` (es Debian por debajo).
 
 ### Cortafuegos (opcional pero recomendable)
 
 ```bash
-sudo apt install -y ufw
-sudo ufw allow OpenSSH
-sudo ufw default deny incoming
-sudo ufw enable
+apt install -y ufw
+ufw allow OpenSSH
+ufw default deny incoming
+ufw enable
 ```
 
-> Los servicios se publican solo en la IP interna (192.168.50.20); el acceso desde internet
-> lo da el proxy inverso del NAS. No abrir puertos del router hacia el PC.
+> ⚠️ La web de ZimaOS (puerto 80) queda **solo en la LAN**: no la publiques ni abras puertos
+> del router hacia el PC. El acceso desde internet lo da el proxy inverso del NAS, igual que
+> con `nube`. Los servicios solo se publican en la IP interna (192.168.50.20).
 ## 4. Desplegar los servicios (Docker Compose)
 
 Crea la estructura en el PC:
@@ -101,6 +80,9 @@ Crea la estructura en el PC:
 ```bash
 mkdir -p ~/lebeche/{onlyoffice,collabora,talk}
 ```
+
+> En ZimaOS, si entras por SSH como `root`, `~` = `/root` (es decir, `/root/lebeche/...`).
+> También puedes crear los contenedores desde la UI (Apps → “+” → Custom / importar compose).
 
 ### 4.1 Office — opción A: OnlyOffice Document Server (recomendada con 16 GB)
 
@@ -242,10 +224,11 @@ sudo docker exec -u www-data nextcloud php occ talk:signaling:list
 
 ## 6. Mantenimiento
 
+- **Sistema (ZimaOS)**: Settings → Update, o actualizaciones automáticas.
+- **Contenedores** (por SSH como root):
+
 ```bash
-# en el PC
-sudo apt update && sudo apt full-upgrade -y
-cd ~/lebeche/*/ && docker compose pull && docker compose up -d   # por servicio
+cd ~/lebeche/<servicio>/ && docker compose pull && docker compose up -d
 ```
 
 - Actualizar los contenedores **una vez al mes** (OnlyOffice y el HPB se actualizan a menudo).
@@ -262,12 +245,12 @@ cd ~/lebeche/*/ && docker compose pull && docker compose up -d   # por servicio
 | Office lento al inicio | primera carga de OnlyOffice | normal; esperar el healthcheck |
 | Talk sigue usando el NAS | signaling no verificado | revisar `talk:signaling:list` y `--verify` |
 | 502 desde internet | proxy DSM o DNS | comprobar CNAME `office`/`signaling` y la regla de proxy |
-| No llega al PC desde el NAS | IP o firewall | `ping 192.168.50.20`, `sudo ufw status` |
+| No llega al PC desde el NAS | IP o firewall | `ping 192.168.50.20`, `ufw status` |
 | 100 Mbps saturados | transferencias internas grandes | normal para office/talk; los archivos grandes van por SMB del NAS |
 
 ## 8. Checklist rápido
 
-- [ ] Ubuntu Server instalado + OpenSSH + IP fija 192.168.50.20.
+- [ ] ZimaOS instalada en el SSD + SSH activado + IP fija 192.168.50.20.
 - [ ] Docker + Compose instalados; usuario `lebeche` en el grupo docker.
 - [ ] OnlyOffice **o** Collabora desplegado y con healthcheck OK.
 - [ ] Talk HPB + NATS desplegados; secreto generado y guardado en CREDENCIALES.md.
