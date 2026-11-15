@@ -22,7 +22,7 @@ Incluye de serie:
 | **Correo** | Leer y enviar desde `monderas@corrientelebeche.es` (o cuentas propias) |
 | **Contactos** | Agenda de la asociación |
 | **Fotos** | Galería de fotos de actividades |
-| ~~Office~~ | ❌ RETIRADO (10-11-2026): los documentos se editan en local (LibreOffice/Word) y se suben a la nube |
+| **Office** | ✅ Editor integrado (OnlyOffice): crear, abrir y co-editar Word/Excel/PowerPoint en el navegador — ver Paso 7 |
 | **Tareas** | Listas de tareas |
 | **Formularios / Encuestas** | Formularios para socias y votaciones |
 
@@ -114,13 +114,46 @@ desde las apps de correo del móvil/ordenador, como hasta ahora.)*
   "Subir archivos") — se usa, p. ej., para recoger fotos de una actividad.
 - Norma: fotos donde salgan menores → enlace con contraseña y caducidad, no enlace abierto.
 
-### Paso 7 — Documentos de ofimática (Word/Excel/PowerPoint)
+### Paso 7 — Documentos de ofimática: editor OnlyOffice (Word/Excel/PowerPoint)
 
-- ❌ El **editor integrado en el navegador se ha retirado** (no iba bien en nuestro NAS).
-- Para editar: **descarga el archivo**, edítalo en el ordenador (LibreOffice, Word…) y
-  **vuelve a subirlo** (o usa la app de escritorio de Nextcloud, que sincroniza la carpeta
-  sola). La versión anterior de cada archivo queda guardada (botón "Versiones").
-- Para apuntes rapidos sigue estando la app **Texto** del propio Nextcloud.
+Desde el **16-11-2026** tenemos editor de documentos integrado (OnlyOffice, funciona en un
+PC auxiliar de la asociación). Se usa **dentro del navegador**, sin instalar nada.
+
+**Crear un documento desde cero**
+
+1. Entra en **Archivos** y sitúate en la carpeta donde quieras crearlo (tu carpeta personal
+   o la carpeta de equipo **MONDERAS**).
+2. Pulsa el botón **«+» (Nuevo)** de la barra superior.
+3. Elige una de las tres opciones de OnlyOffice:
+   - 📄 **Documento de texto** (`.docx`, como Word)
+   - 📊 **Hoja de cálculo** (`.xlsx`, como Excel)
+   - 📽️ **Presentación** (`.pptx`, como PowerPoint)
+4. Se crea el archivo en blanco y **se abre el editor directamente**. Al cerrarlo, queda
+   guardado en la nube.
+
+**Abrir y editar**
+
+- Haz **clic en cualquier `.docx`, `.xlsx` o `.pptx`** de Archivos: se abre en el editor.
+- También abre `.doc`, `.xls`, `.ppt`, `.csv`, `.txt` y `.odt`. Con `.pdf` solo se **ve**
+  (no se edita).
+- El guardado es **automático** mientras escribes (no hace falta darle a guardar).
+- Las versiones anteriores quedan en el botón **Versiones** (historial de cambios).
+
+**Editar varias personas a la vez (co-edición en tiempo real)**
+
+- Dos o más Monderas pueden abrir el mismo documento a la vez y escribir **simultáneamente**.
+- Se ve el nombre de quién está dentro y su cursor, cada una de un color.
+- Se pueden dejar **comentarios** (botón de comentarios del editor) y responderlos.
+- Ojo: para co-editar, todas deben estar **dentro del navegador**. Si una descarga el archivo
+  y lo edita en local (Word/LibreOffice), creará una versión aparte (ver normas de uso).
+
+**Consejos**
+
+- Los documentos de la asociación, mejor en la carpeta **MONDERAS** (los ven todas).
+- En el **móvil**: el editor funciona en el navegador, pero para trabajar en serio usad un
+  ordenador (la app móvil de Nextcloud no abre el editor de Office).
+- Quien prefiera seguir con LibreOffice/Word en su ordenador puede seguir
+  descargando/subiendo como antes; las dos formas conviven.
 
 ### Paso 8 — Archivos grandes (vídeos, carpetas de fotos)
 
@@ -152,7 +185,7 @@ desde las apps de correo del móvil/ordenador, como hasta ahora.)*
 |---|---|
 | "No puedo entrar" | Comprueba usuario/contraseña; si la olvidaste, pide a la admin que la restablezca |
 | "No veo el calendario de actividades" | Acepta la compartición del grupo (aviso en Calendario) o pide que te añadan al grupo |
-| "No me abre un Word en el navegador" | El editor integrado está retirado: descarga el archivo, edítalo en el ordenador y vuélvelo a subir |
+| "No me abre un Word en el navegador" | Haz clic en el archivo dentro de Archivos (web). Si aun así no abre, avisa a la admin (el editor corre en el PC auxiliar) |
 | "No me deja subir un vídeo de 300 MB por la web" | Usa la app de escritorio/móvil (trocea la subida) |
 | "¿Dónde están mis datos?" | En el NAS de la asociación (Salobreña). Hay copia de seguridad de la base de datos semanal; la copia completa de archivos se añadirá en breve |
 | "¿Y si se rompe el NAS?" | Existen copias locales (web y BBDD); **no hay todavía copia externa**: no guardéis aquí el único ejemplar de algo irremplazable hasta avisaros de que el backup externo está listo |
