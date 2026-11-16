@@ -162,17 +162,17 @@ PC auxiliar de la asociación). Se usa **dentro del navegador**, sin instalar na
 
 ### Paso 8 — Equipos (comisiones)
 
-Las **10 comisiones** están montadas como **Equipos** en la nube, cada una con su carpeta
-privada y sus miembros:
+Las **10 comisiones** están montadas como **Equipos** en la nube, cada una con su carpeta:
 
 C. RAÍZ · MONDERAS · E.T. APERTURAS · SOBERANÍA ALIMENTARIA · ACALENCÁ Y LOGÍSTICA ·
 COMUNICACIÓN/DISEÑO/ARTE · CUIDADOS Y CARIÑITOS · FACILITACIÓN DE ASAMBLEAS ·
 HEMEROTECA LEBECHE · SUBVERSIONES
 
-- En la app **Equipos** ves a qué comisiones perteneces y quién está en cada una.
-- En **Archivos**, cada comisión tiene su carpeta: **solo la ven y la tocan sus miembros**.
-- Los documentos de cada comisión se guardan ahí (actas, materiales, presupuestos…).
-- Si una Mondera cambia de comisión, se la añade o quita del equipo y ya está.
+- **Todas las Monderas están en todas las comisiones**: en la app **Equipos** veréis los
+  10 equipos, y en **Archivos** las 10 carpetas correspondientes (cada una con sus
+  documentos: actas, materiales, presupuestos…).
+- Los documentos de cada comisión se guardan en su carpeta.
+- Si entra una Mondera nueva, la admin la añade a los 10 equipos y ya lo ve todo.
 
 ### Paso 9 — Talk (videollamadas y chats)
 
