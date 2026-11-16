@@ -163,15 +163,16 @@ PC auxiliar de la asociación). Se usa **dentro del navegador**, sin instalar na
 ### Paso 8 — Equipos (comisiones)
 
 Las **10 comisiones** están montadas como **Equipos** en la nube, cada una con su carpeta
-y **sus propios miembros**:
+y sus miembros:
 
 C. RAÍZ · MONDERAS · E.T. APERTURAS · SOBERANÍA ALIMENTARIA · ACALENCÁ Y LOGÍSTICA ·
 COMUNICACIÓN/DISEÑO/ARTE · CUIDADOS Y CARIÑITOS · FACILITACIÓN DE ASAMBLEAS ·
 HEMEROTECA LEBECHE · SUBVERSIONES
 
-- En la app **Equipos** ves las comisiones a las que perteneces y quién está en cada una.
-- En **Archivos**, cada comisión tiene su carpeta: la ven y la tocan **sus miembros**.
-- Los documentos de cada comisión se guardan ahí (actas, materiales, presupuestos…).
+- **Todas las Monderas pueden ver las 10 comisiones** en la app **Equipos**.
+- Para entrar en una comisión hay que **pedir acceso** (botón de "pedir acceso/unirse" en
+  el equipo): la admin lo aprueba y entonces verás también su carpeta en Archivos.
+- Los documentos de cada comisión se guardan en su carpeta (solo la ven sus miembros).
 - Si no ves una comisión que te corresponde (o cambias de comisión), pídeselo a la admin:
   se añade o quita del equipo al momento.
 
