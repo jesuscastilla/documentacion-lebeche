@@ -153,6 +153,8 @@ PC auxiliar de la asociación). Se usa **dentro del navegador**, sin instalar na
 **Consejos**
 
 - Los documentos de la asociación, mejor en la carpeta **MONDERAS** (los ven todas).
+- En el **menú de aplicaciones** (arriba) hay un acceso directo **«Office»** que lleva
+  directamente a la carpeta MONDERAS de Archivos.
 - En el **móvil**: el editor funciona en el navegador, pero para trabajar en serio usad un
   ordenador (la app móvil de Nextcloud no abre el editor de Office).
 - Quien prefiera seguir con LibreOffice/Word en su ordenador puede seguir
