@@ -171,7 +171,8 @@ HEMEROTECA LEBECHE · SUBVERSIONES
 
 - **Todas las Monderas pueden ver las 10 comisiones** en la app **Equipos**.
 - Para entrar en una comisión hay que **pedir acceso** (botón de "pedir acceso/unirse" en
-  el equipo): la admin lo aprueba y entonces verás también su carpeta en Archivos.
+  el equipo): la admin o **cualquier miembra del equipo** lo aprueba (todas son
+  **moderadoras**), y entonces verás también su carpeta en Archivos.
 - Los documentos de cada comisión se guardan en su carpeta (solo la ven sus miembros).
 - Si no ves una comisión que te corresponde (o cambias de comisión), pídeselo a la admin:
   se añade o quita del equipo al momento.
