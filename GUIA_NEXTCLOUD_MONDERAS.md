@@ -97,14 +97,15 @@ configurar nada.
 
 ### Paso 5 — Organizar los Archivos
 
-- En **Archivos** tienes: tu **carpeta personal** (solo la ves tú) y las carpetas
-  **compartidas**:
-  - **MONDERAS** — carpeta de equipo general (100 GB): aquí viven `Actas` y `Fotos`
-    (migradas del NAS, que guarda copia de seguridad).
-  - **carpeta general MONDERAS** — carpeta del equipo del mismo nombre.
+- En **Archivos** tienes: tu **carpeta personal** (solo la ves tú) y las **carpetas
+  compartidas** — **todas visibles y editables por todas las Monderas**:
+  - **carpeta general MONDERAS** — documentación actual de la asociación (`Actas`,
+    `Fotos`, `TUTORIALES`).
+  - **antiguo CRYPTDRIVE** — archivo histórico migrado desde CryptPad (actas por año,
+    carpetas de las comisiones, eventos, talleres…).
   - **Una carpeta por comisión** (ver Paso 8, Equipos).
 - Para subir archivos: botón **«+» → Subir archivo** (o arrastra y suelta). Lo que subas
-  en una carpeta compartida lo ven todas las Monderas.
+  en una carpeta compartida lo ven y editan todas las Monderas.
 - Cada cuenta tiene su cuota personal; si alguien se queda sin espacio, avisa a la admin
   y se amplía.
 
@@ -153,8 +154,6 @@ PC auxiliar de la asociación). Se usa **dentro del navegador**, sin instalar na
 **Consejos**
 
 - Los documentos de la asociación, mejor en la carpeta **MONDERAS** (los ven todas).
-- En el **menú de aplicaciones** (arriba) hay un acceso directo **«Office»** que lleva
-  directamente a la carpeta MONDERAS de Archivos.
 - En el **móvil**: el editor funciona en el navegador, pero para trabajar en serio usad un
   ordenador (la app móvil de Nextcloud no abre el editor de Office).
 - Quien prefiera seguir con LibreOffice/Word en su ordenador puede seguir
@@ -162,20 +161,17 @@ PC auxiliar de la asociación). Se usa **dentro del navegador**, sin instalar na
 
 ### Paso 8 — Equipos (comisiones)
 
-Las **10 comisiones** están montadas como **Equipos** en la nube, cada una con su carpeta
-y sus miembros:
+Las **10 comisiones** están montadas como **Equipos** en la nube, cada una con su carpeta:
 
 C. RAÍZ · MONDERAS · E.T. APERTURAS · SOBERANÍA ALIMENTARIA · ACALENCÁ Y LOGÍSTICA ·
 COMUNICACIÓN/DISEÑO/ARTE · CUIDADOS Y CARIÑITOS · FACILITACIÓN DE ASAMBLEAS ·
 HEMEROTECA LEBECHE · SUBVERSIONES
 
-- **Todas las Monderas pueden ver las 10 comisiones** en la app **Equipos**.
-- Para entrar en una comisión hay que **pedir acceso** (botón de "pedir acceso/unirse" en
-  el equipo): la admin o **cualquier miembra del equipo** lo aprueba (todas son
-  **moderadoras**), y entonces verás también su carpeta en Archivos.
-- Los documentos de cada comisión se guardan en su carpeta (solo la ven sus miembros).
-- Si no ves una comisión que te corresponde (o cambias de comisión), pídeselo a la admin:
-  se añade o quita del equipo al momento.
+- **Todas las Monderas están en todas las comisiones** y todas sus carpetas son
+  **visibles y editables por todas** (decisión de la asociación: sin permisos por
+  carpeta, más simple de gestionar).
+- Cada cuenta tiene además su **espacio personal** (solo lo ve ella).
+- Los documentos de cada comisión se guardan en su carpeta.
 
 ### Paso 9 — Talk (videollamadas y chats)
 

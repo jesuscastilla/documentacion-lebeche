@@ -1,9 +1,10 @@
 # Guía urgente: exportar los datos de CryptPad
 
-> ✅ **Resuelto 18-11-2026**: la cuenta NO está borrada. Vive en la **instancia de Disroot**:
-> **https://cryptpad.disroot.org** (los intentos fallidos eran en cryptpad.fr, otra instancia).
-> Login verificado con usuario `corrientelebeche` y la contraseña de siempre.
-> CryptDrive completo: 14 carpetas + 9 documentos sueltos (~529 MB).
+> ✅ **MIGRACIÓN COMPLETADA (18-11-2026)**: descarga en bloque hecha desde los ajustes de
+> CryptPad (`corrientelebeche-Wed-Nov-18-2026.zip`, 419 entradas). Los 99 HTML se
+> convirtieron a DOCX (pandoc, 0 fallos) y todo se subió a la nube en la carpeta de equipo
+> **«antiguo CRYPTDRIVE»** (visible y editable por todas las Monderas). Los originales
+> `.html` se quedan en el PC. Esta guía queda como referencia histórica.
 
 ## 1. Entrar
 
