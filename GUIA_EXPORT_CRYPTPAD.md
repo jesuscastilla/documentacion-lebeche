@@ -1,50 +1,36 @@
 # Guía urgente: exportar los datos de CryptPad
 
-> Actualización **18-11-2026**: la cuenta `corrientelebeche` de cryptpad.fr **ha sido
-> borrada** (verificado: el servidor devuelve 404 en el bloque de login; códigos internos
-> `EDELETED` / `NO_SUCH_USER`). CryptPad no puede recuperarla.
-> **La única vía de rescate es la sesión de invitado de los navegadores** de quien tuviera
-> documentos abiertos o su CryptDrive de invitado guardado.
+> ✅ **Resuelto 18-11-2026**: la cuenta NO está borrada. Vive en la **instancia de Disroot**:
+> **https://cryptpad.disroot.org** (los intentos fallidos eran en cryptpad.fr, otra instancia).
+> Login verificado con usuario `corrientelebeche` y la contraseña de siempre.
+> CryptDrive completo: 14 carpetas + 9 documentos sueltos (~529 MB).
 
-## ⚠️ Primero: revisar las sesiones de invitado (¡esto es lo importante ahora!)
+## 1. Entrar
 
-En **el mismo navegador y equipo** donde la miembra vio "la cuenta" al entrar:
+1. Ir a **https://cryptpad.disroot.org/login/** (¡no cryptpad.fr!).
+2. Usuario: `corrientelebeche` · Contraseña: la de siempre (`L3becheGuay2023`).
+3. Ya dentro, abrir **Drive** (https://cryptpad.disroot.org/drive/).
 
-1. Abrir https://cryptpad.fr/drive/ **sin iniciar sesión** (o tras cerrar sesión).
-2. Si aparece un **CryptDrive con documentos** → es la sesión de invitado del navegador:
-   **exportar todo YA** siguiendo el Paso 2 de abajo.
-3. Pedir a TODAS las Monderas que hagan lo mismo en sus ordenadores/móviles: los
-   documentos pueden estar repartidos entre varios navegadores.
+## 2. Exportar los documentos (uno a uno)
 
-## Paso 2 — Exportar los documentos (uno a uno)
+- **Doble clic** en un documento para abrirlo.
+- Menú **Archivo → Exportar** → elegir formato y nombre → OK. Se descarga al PC.
+- Formatos recomendados: `.docx` (los Word/OnlyOffice), `.md`/`.html` (textos), `.csv`/`.xlsx` (hojas).
+- Los **PNG/imágenes** del drive: se pueden descargar directamente con su menú.
+- Prioridad: **actas y documentos de texto** de las 14 carpetas:
+  ACTAS Y TAREAS COMPLETADAS · Comisión Acalencá · Comisión Artística · Comisión de
+  Cuidados · Comisión Educación · Comisión Organización Interna · Comisión Redes y
+  Propaganda · Comisión Tesorería · EVENTOS PASADOS · Información general e imagen ·
+  Propuestas · Proyectos en marcha · TALLERES · TAREAS GENERALES
+- Los 9 documentos de la raíz: contrato de cesión Acalencá, disponibilidad organizadoras,
+  formulario comida popular, logo, proyecto Patio Biodiverso, tabla cartelería, etc.
 
-Abrir cada documento y usar el menú **File/Archivo → Export/Exportar**:
+## 3. Subir lo exportado
 
-| Tipo de documento | Formatos a elegir |
-|---|---|
-| **Texto enriquecido** | Markdown (`.md`) o HTML (`.html`) — legibles en cualquier sitio |
-| **Hoja de cálculo** | `.xlsx` (Export to file) o `.csv` |
-| **Presentación** | Markdown (`.md`) |
-| **Kanban** | `.json` (y copiar el contenido si es corto) |
-| **Código/Markdown** | `.md` |
-| **Pizarra/Whiteboard** | `.svg` o `.png` |
-| **Formulario** | copiar las respuestas desde la pestaña *Responses* |
+- A **nube.corrientelebeche.es → Archivos → MONDERAS → (nueva carpeta) `Migración CryptPad`**.
+- O enviárselo a Pelotxo (administración).
 
-Prioridad: **actas, documentos de la asociación y textos**.
-Guardad todo en una carpeta local tipo `cryptpad-export/` con nombres claros.
+## 4. Después (migración)
 
-## Paso 3 — Compartir lo exportado
-
-- Subir la carpeta a **nube.corrientelebeche.es → Archivos → MONDERAS → `Migración CryptPad`**.
-- O enviársela a Pelotxo (administración).
-
-## Confirmación con el equipo de CryptPad
-
-Para dejar constancia (y por si existiera algún resto), escribir al equipo de CryptPad
-(contacto en su web https://cryptpad.fr/contact.html y Mastodon) indicando el nombre de
-usuario `corrientelebeche`: pueden confirmar la fecha de borrado por inactividad.
-
-## Después (migración)
-
-- Los `.md` se abren en la nube y se pueden guardar como `.docx` desde el editor.
-- Las hojas `.csv` se abren con la hoja de cálculo de la nube.
+- Los `.docx`/`.xlsx` se abren directamente con el editor OnlyOffice de la nube.
+- Los `.md` se abren como texto y pueden guardarse como `.docx` desde el editor.
