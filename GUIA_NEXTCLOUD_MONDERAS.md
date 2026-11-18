@@ -51,8 +51,8 @@ Cada Mondera tiene **su propia cuenta** (creadas en noviembre de 2026) y todas e
   entre una Mondera nueva, se añade al grupo y ya lo ve todo.
 - La cuenta **`lebeche`** es la de **administración** (Pelotxo): crea usuarias, gestiona
   cuotas y apps. No se usa para el trabajo diario.
-- La cuenta `monderas` queda como **cuenta de emergencia/pruebas** (recuperar accesos,
-  configuraciones comunes).
+- Pelotxo tiene además su cuenta personal **`pelochi`** para el día a día.
+- *(La antigua cuenta de pruebas `monderas` fue eliminada en noviembre de 2026.)*
 
 **No compartáis contraseñas**: cada una usa la suya (ver normas de uso).
 
