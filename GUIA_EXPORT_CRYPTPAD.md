@@ -1,23 +1,22 @@
 # Guía urgente: exportar los datos de CryptPad
 
-> Situación (18-11-2026): la cuenta `corrientelebeche` de cryptpad.fr da errores de login
-> intermitentes (lleva ~1 mes). Hoy una miembra ha conseguido entrar. **Esta guía es para
-> exportar todo lo posible AHORA, sin cerrar la sesión.**
+> Actualización **18-11-2026**: la cuenta `corrientelebeche` de cryptpad.fr **ha sido
+> borrada** (verificado: el servidor devuelve 404 en el bloque de login; códigos internos
+> `EDELETED` / `NO_SUCH_USER`). CryptPad no puede recuperarla.
+> **La única vía de rescate es la sesión de invitado de los navegadores** de quien tuviera
+> documentos abiertos o su CryptDrive de invitado guardado.
 
-## ⚠️ Antes de nada
+## ⚠️ Primero: revisar las sesiones de invitado (¡esto es lo importante ahora!)
 
-- **NO cerrar la sesión** ni cerrar el navegador hasta terminar la exportación.
-- **NO borrar caché/cookies** del navegador (ahí están las claves de los documentos).
-- Hacerlo en un ordenador (mejor que en el móvil).
+En **el mismo navegador y equipo** donde la miembra vio "la cuenta" al entrar:
 
-## Paso 1 — Copia de seguridad de la cuenta (lo primero)
+1. Abrir https://cryptpad.fr/drive/ **sin iniciar sesión** (o tras cerrar sesión).
+2. Si aparece un **CryptDrive con documentos** → es la sesión de invitado del navegador:
+   **exportar todo YA** siguiendo el Paso 2 de abajo.
+3. Pedir a TODAS las Monderas que hagan lo mismo en sus ordenadores/móviles: los
+   documentos pueden estar repartidos entre varios navegadores.
 
-1. Avatar (arriba a la derecha) → **Settings (Ajustes)** → sección **Account / Usuario**.
-2. Botón **Backup / Copia de seguridad** → descarga un archivo con todo el CryptDrive.
-   - Guardadlo con nombre claro: `cryptpad-backup-2026-11-18.json`.
-   - ⚠️ Ese archivo está cifrado con la clave de la cuenta: guardad también la contraseña.
-
-## Paso 2 — Exportar los documentos importantes (uno a uno)
+## Paso 2 — Exportar los documentos (uno a uno)
 
 Abrir cada documento y usar el menú **File/Archivo → Export/Exportar**:
 
@@ -31,25 +30,21 @@ Abrir cada documento y usar el menú **File/Archivo → Export/Exportar**:
 | **Pizarra/Whiteboard** | `.svg` o `.png` |
 | **Formulario** | copiar las respuestas desde la pestaña *Responses* |
 
-Prioridad: **actas, documentos de la asociación y textos** (fotos y carteles probablemente
-ya estén en la nube). Para cada uno, guardad en una carpeta local tipo
-`cryptpad-export/` con nombres claros.
+Prioridad: **actas, documentos de la asociación y textos**.
+Guardad todo en una carpeta local tipo `cryptpad-export/` con nombres claros.
 
 ## Paso 3 — Compartir lo exportado
 
-- Subir la carpeta a la nube de la asociación: **nube.corrientelebeche.es → Archivos →
-  carpeta MONDERAS → (nueva carpeta) `Migración CryptPad`**.
-- O enviársela a Pelotxo (administración) para que la organice.
+- Subir la carpeta a **nube.corrientelebeche.es → Archivos → MONDERAS → `Migración CryptPad`**.
+- O enviársela a Pelotxo (administración).
 
-## Si el login vuelve a fallar
+## Confirmación con el equipo de CryptPad
 
-- Reintentar más tarde (ha funcionado por rachas).
-- Probar otro navegador o una ventana privada.
-- Escribir al equipo de CryptPad (contacto en su web / Mastodon) si la cuenta no deja entrar
-  durante días: pueden confirmar si sigue existiendo o está bloqueada por inactividad.
+Para dejar constancia (y por si existiera algún resto), escribir al equipo de CryptPad
+(contacto en su web https://cryptpad.fr/contact.html y Mastodon) indicando el nombre de
+usuario `corrientelebeche`: pueden confirmar la fecha de borrado por inactividad.
 
 ## Después (migración)
 
-- Los `.md` se convierten a `.docx` con el editor de la nube si hace falta (se abren y se
-  "guardan como" docx), o se dejan como texto.
-- Las hojas `.csv` se abren con el editor de hojas de la nube.
+- Los `.md` se abren en la nube y se pueden guardar como `.docx` desde el editor.
+- Las hojas `.csv` se abren con la hoja de cálculo de la nube.
