@@ -195,9 +195,7 @@ asambleas a distancia…):
 
 ### Paso 11 — Calendario y contactos en el móvil
 
-- **Mondera's App** sigue usando el calendario de Synology (CalDAV de la asociación) como
-  hasta ahora.
-- Si además quieres los calendarios de la nube en el móvil, añade una cuenta **CalDAV**
+- Si quieres los calendarios de la nube en el móvil, añade una cuenta **CalDAV**
   nativa con la URL `https://nube.corrientelebeche.es/remote.php/dav/`.
 - La libreta de contactos **Morralleras** también puede sincronizarse con una cuenta
   **CardDAV** en esa misma URL.
@@ -240,7 +238,6 @@ asambleas a distancia…):
 4. Añadir `/volume1/nextcloud` a HyperBackup (copias de archivos) + preparar copia
    externa (USB).
 5. Borrar los DNS `correo`/`webmail` de Cloudflare (ya sin uso).
-6. Decidir si Mondera's App pasa a usar el calendario de Nextcloud (hoy usa Synology).
-7. 2FA: descartada de momento por decisión de la asociación (se puede reabrir).
+6. 2FA: descartada de momento por decisión de la asociación (se puede reabrir).
 
 

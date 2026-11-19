@@ -28,7 +28,6 @@ Este repositorio forma parte del conjunto de desarrollos autogestionados de la a
 - **Web oficial:** [lebeche-web](https://github.com/jesuscastilla/lebeche-web) (`https://www.corrientelebeche.es/lebeche/`)
 - **Nube asociativa:** [lebeche-nextcloud](https://github.com/jesuscastilla/lebeche-nextcloud) (`https://nube.corrientelebeche.es/`)
 - **Infraestructura de correo:** [lebeche-correo](https://github.com/jesuscastilla/lebeche-correo)
-- **App de gestión Monderas:** [monderas-app](https://github.com/jesuscastilla/monderas-app)
 - **Barrioteca Acalencá:** [barrioteca-web](https://github.com/jesuscastilla/barrioteca-web) · [barrioteca-android](https://github.com/jesuscastilla/barrioteca-android) · [barrioteca-ios](https://github.com/jesuscastilla/barrioteca-ios) · [barrioteca-slims](https://github.com/jesuscastilla/barrioteca-slims)
 
 ---

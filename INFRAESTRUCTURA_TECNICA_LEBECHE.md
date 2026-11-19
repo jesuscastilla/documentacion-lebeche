@@ -22,7 +22,6 @@ todo servido desde un **NAS Synology DS223** en casa, expuesto a internet a trav
 | **Nextcloud (nube)** | `https://nube.corrientelebeche.es` | Docker `nextcloud` (puerto 8087) |
 | Correo de la asociación | `monderas@corrientelebeche.es` | Hostalia (MX) + Nextcloud Mail / apps |
 | Newsletter de socias | `https://www.corrientelebeche.es/newsletter/` | NAS `/volume1/web/newsletter/` (envío por CLI) |
-| Mondera's App | Google Play | NAS (CalDAV → Nextcloud, correo IMAP, File Station) |
 | Barrioteca Android | Google Play | NAS (api-proxy PHP) |
 | Barrioteca iOS | PWA | NAS |
 | DSM (administración NAS) | `https://pelotxo.synology.me:5001` | NAS |
@@ -197,7 +196,6 @@ también en Panel de control → Programador de tareas.
 | `barrioteca-slims/` | SLiMS 9.8.0 | PHP 8.2 + MariaDB | En producción; API REST `/api/v1` |
 | `barrioteca-android/` | App Android | Kotlin + Compose (`com.lebeche.barrioteca`, v5.0.0/100) | En Google Play (CI GitHub Actions) |
 | `barrioteca-ios/` | App iOS | Swift + WKWebView | PWA en iOS |
-| `monderas-app/` | App unificada | Kotlin + Compose (`com.lebeche.calendario`, v3.1.0/26) | Play: Calendario (CalDAV), Correo, Web STAFF, Drive |
 | `lebeche-correo/` | Correo | Roundcube (retirado) + `newsletter/` activo | Newsletter CLI + baja one-click |
 | `lebeche-nextcloud/` | Nube | Docker (Nextcloud + Collabora) | Desplegado 10-11-2026 |
 | `documentacion-lebeche/` | Documentación | Markdown | Este documento + guías |
@@ -214,9 +212,6 @@ Detalles relevantes:
   → borrarlos cuando se termine la importación.
 - **Barrioteca web:** caché en 3 capas (proxy PHP → Nginx → Cloudflare); `env='production'`
   en despliegue; no desplegar `server.cjs` (artefacto Node, en producción solo PHP).
-- **Mondera's App:** la pestaña Calendario usa CalDAV → **reapuntar a
-  `https://nube.corrientelebeche.es/remote.php/dav/`** (antes apuntaba a Synology Calendar,
-  que ya no está instalado). Correo: IMAP directo contra Hostalia. Drive: File Station.
 - **Identidad:** tipografías autocontenidas (Open Sans, Garet, Courgette), sin Google Fonts.
 
 ## 6. Nextcloud (ficha técnica)
@@ -333,12 +328,11 @@ Detalles relevantes:
 4. ~~Crear las cuentas de las Monderas y compartir calendarios/carpetas con el grupo~~ —
    **hecho el 10-11-2026**: calendarios y carpetas `Actas`/`Fotos` ya compartidos con el
    grupo `Monderas`; quedan por crear las cuentas personales (las añade el usuario).
-5. **Reapuntar el CalDAV de Mondera's App** a Nextcloud.
-6. ~~Migrar ACTAS (1,4 GB) y Fotos (4 GB) desde `homes/lebeche` a Nextcloud~~ — **hecho el
+5. ~~Migrar ACTAS (1,4 GB) y Fotos (4 GB) desde `homes/lebeche` a Nextcloud~~ — **hecho el
    10-11-2026** (copiadas a la cuenta `monderas`; originales conservados como respaldo).
-7. Borrar los CNAME `correo`/`webmail`/`office` de Cloudflare si se desea (sin servicio).
-8. Borrar scripts de mantenimiento públicos de SLiMS al terminar la importación.
-9. (Opcional) 2FA y cambio de contraseñas por defecto en Nextcloud.
+6. Borrar los CNAME `correo`/`webmail`/`office` de Cloudflare si se desea (sin servicio).
+7. Borrar scripts de mantenimiento públicos de SLiMS al terminar la importación.
+8. (Opcional) 2FA y cambio de contraseñas por defecto en Nextcloud.
 
 ## 12. Glosario
 
@@ -348,7 +342,7 @@ Detalles relevantes:
 | Morralleras | Socias: acuden a actividades, no organizan |
 | Barrioteca Acalencá | Biblioteca vecinal autogestionada (préstamos por escaneo) |
 | SLiMS | Software de biblioteca (PHP + MariaDB), backend de la Barrioteca |
-| CalDAV/CardDAV | Protocolos de calendario y contactos (usa Mondera's App / Nextcloud) |
+| CalDAV/CardDAV | Protocolos de calendario y contactos (usa Nextcloud / apps de calendario) |
 | WOPI | Protocolo de integración de Nextcloud Office con Collabora (retirado junto al Office, 10-11-2026) |
 | CODE | Collabora Online Development Edition (suite ofimática libre; retirada del NAS, 10-11-2026) |
 | HyperBackup | Copias de seguridad de Synology |
