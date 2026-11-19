@@ -229,15 +229,17 @@ Detalles relevantes:
   cuota por usuario en Nextcloud = 20 GB). **BD:** `nextcloud` en MariaDB 10 (3307).
 - **Usuarios:** `lebeche` (administrador) y `monderas` (grupo `Monderas`; recreada el
   10-11-2026 tras un borrado desde la UI). Contraseñas en `CREDENCIALES.md`.
-- **Apps habilitadas (44):** Calendar, Contacts, Mail, Tasks, Forms, Polls, Photos, Activity
-  + núcleo (Files, DAV, Sharing, Versiones, Papelera, Visor, 2FA...).
-  **Eliminadas (10-11-2026):** `notes`, `deck`, `spreed` (Talk), `bookmarks`, `richdocuments`.
+- **Apps habilitadas (46):** Calendar, Contacts, Mail, Tasks, Forms, Polls, Photos, Activity,
+  **Deck, Notes, Cospend** (instaladas 19-11-2026) + núcleo (Files, DAV, Sharing,
+  Versiones, Papelera, Visor, Texto, Talk, OnlyOffice, Equipos, groupfolders, External sites...).
+  **Eliminadas (10-11-2026):** `bookmarks`, `richdocuments` (notes/deck/spreed reinstaladas).
   **Deshabilitadas:** `office`, `federation`, `recommendations`, `related_resources`,
   `weather_status`, `user_status`, `support`, `survey_client`, `webhook_listeners`,
   `contactsinteraction`, `files_external`, `admin_audit`, `encryption`, `serverinfo`,
   `suspicious_login`, `systemtags`, `twofactor_nextcloud_notification`, `user_ldap`,
-  `nextcloud_announcements`. No deshabilitables (núcleo): `federatedfilesharing`,
-  `cloud_federation_api`, `lookup_server_connector`, `profile`, `workflowengine`.
+  `nextcloud_announcements`, `files_downloadlimit`, `files_lock`, `files_reminders`.
+  No deshabilitables (núcleo NC 35): `federatedfilesharing`, `cloud_federation_api`,
+  `lookup_server_connector`, `profile`, `workflowengine`, `oauth2`, `twofactor_backupcodes`.
 - **Calendarios:** `lebeche`, `actividades`, `asambleas` — propiedad de `monderas` y
   **compartidos con el grupo `Monderas` (lectura/escritura)** el 10-11-2026.
 - **Archivos:** carpetas `Actas` (1,4 GB) y `Fotos` (4 GB) **migradas** desde
