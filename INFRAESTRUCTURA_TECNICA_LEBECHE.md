@@ -223,7 +223,8 @@ Detalles relevantes:
 
 - **URL:** `https://nube.corrientelebeche.es` · **Nextcloud Office ELIMINADO (10-11-2026)**
   — no iba bien en este NAS; los documentos se editan en local y se suben a la nube.
-- **Versión:** Nextcloud 35.0.2 (imagen `nextcloud:35.0-apache`), PHP embebido en la imagen.
+- **Versión:** Nextcloud 35.0.3.2 (imagen **pineada** `nextcloud:35.0.3-apache` desde
+  el 19-11-2026; healthcheck `/status.php` en el compose), PHP embebido en la imagen.
 - **Datos:** `/volume1/nextcloud` (bind mount; aún sin cuota de carpeta compartida DSM,
   cuota por usuario en Nextcloud = 20 GB). **BD:** `nextcloud` en MariaDB 10 (3307).
 - **Usuarios:** `lebeche` (administrador) y `monderas` (grupo `Monderas`; recreada el
@@ -252,8 +253,10 @@ Detalles relevantes:
 - **Límites conocidos:** RAM total del NAS 2 GB; subidas web ≤ 100 MB (Cloudflare) — la app
   de escritorio trocea; sin Full Text Search ni Recognize (pesados); **sin editor Office
   integrado** (se edita en local con LibreOffice/Word).
-- **Actualizaciones:** pinnear `35.0`; al saltar de major: `docker compose pull` +
-  `occ upgrade` + verificar apps.
+- **Actualizaciones:** imagen pineada a `35.0.3-apache`; al saltar de major:
+  `docker compose pull` + `occ upgrade` + verificar apps.
+  **Apps: actualizar solo por CLI** (`occ app:update --all`), nunca desde la web
+  (disparador de los segfaults de mod_php del 10-11 y 19-11-2026).
 
 ## 7. Correo electrónico
 
@@ -310,7 +313,9 @@ Detalles relevantes:
 - **Certificados:** Cloudflare Origin (2041, no caduca a corto plazo); ZeroSSL/acme.sh renovado
   a diario como respaldo (`renew-deploy-cert.sh`).
 - **Nextcloud:** revisar el panel de administración (Ajustes → Vista general) tras
-  actualizaciones; `occ status`; logs `docker logs nextcloud`.
+  actualizaciones; `occ status`; logs `docker logs nextcloud`. Tras recrear el contenedor
+  o tocar el compose, verificar que el montaje `zz-nas.ini` sigue (`php -i | grep opcache.jit`
+  → `off`): el 19-11-2026 se perdió al añadir Redis y la nube cayó (502, `AH00051`).
 
 ## 11. Pendientes y próximos pasos
 
