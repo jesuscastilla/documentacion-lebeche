@@ -307,6 +307,11 @@ Detalles relevantes:
 
 ## 10. Mantenimiento y salud
 
+- **Jellyfin migrado al PC auxiliar (19-11-2026):** contenedor en ZimaOS
+  (`http://192.168.50.95:8096`; config/datos migrados del NAS; videoteca por CIFS en la
+  misma ruta `/volume1/video`). Paquete DSM parado con rollback fácil
+  (`/usr/local/etc/rc.d/S99z-stop-jellyfin.sh`). Externo: `jellyfin.corrientelebeche.es`
+  (w3conf del proxy inverso, cert CF Origin) — falta CNAME en Cloudflare.
 - **Verificación:** `ssh pelotxo@192.168.50.94 "sh /var/services/homes/pelotxo/verificar-salud.sh"`
   (6 bloques: red, cabeceras de caché, micro-caché, despliegue, RAM, Cloudflare/API).
 - **Regla de oro tras actualizar DSM:** comprobar primero el adaptador USB 2,5G (`eth1` = 2500).
