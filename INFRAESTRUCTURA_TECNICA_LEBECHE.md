@@ -120,8 +120,8 @@ almacenamiento ejecutada (ver sección 11).
 
 | Proyecto | Servicio | Imagen | Puerto | Estado |
 |---|---|---|---|---|
-| `/volume2/docker/nextcloud/` | `nextcloud` | `nextcloud:35.0-apache` | 8087→80 | ✅ Up |
-| `/volume2/docker/roundcube/` | `roundcube` | `roundcube/roundcubemail:latest` | 8090→80 | ⏸️ Exited (retirado) |
+| `/volume1/docker/nextcloud/` | `nextcloud` | `nextcloud:35.0-apache` | 8087→80 | ✅ Up |
+| `/volume1/docker/roundcube/` | `roundcube` | `roundcube/roundcubemail:latest` | 8090→80 | ⏸️ Exited (retirado) |
 
 - Nextcloud: volúmenes `./html:/var/www/html`, `/volume1/nextcloud:/var/www/html/data`,
   `apache-mpm.conf` (prefork 2/1/3/8), `mem_limit 900m`, `extra_hosts host.docker.internal`.
@@ -269,7 +269,7 @@ Detalles relevantes:
   (STARTTLS). ⚠️ Usar los hostnames del **proveedor** (`*.dominioabsoluto.net`), no
   `*.corrientelebeche.es` (el certificado TLS es del proveedor; puerto 465 cerrado).
 - **Webmail:** Nextcloud Mail (Roundcube retirado el 10-11-2026; datos conservados en
-  `/volume2/docker/roundcube/` y BD `roundcube` para rollback).
+  `/volume1/docker/roundcube/` y BD `roundcube` para rollback).
 - **Newsletter:** envío por CLI desde el NAS (`/volume1/web/newsletter/enviar.php`, SMTP
   Hostalia) con baja en un clic (`baja.php`, `List-Unsubscribe` RFC 8058).
 - Los CNAME `correo`/`webmail` de Cloudflare quedan sin servicio; se pueden borrar.
