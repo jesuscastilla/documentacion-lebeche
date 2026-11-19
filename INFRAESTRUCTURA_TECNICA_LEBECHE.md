@@ -229,8 +229,8 @@ Detalles relevantes:
   cuota por usuario en Nextcloud = 20 GB). **BD:** `nextcloud` en MariaDB 10 (3307).
 - **Usuarios:** `lebeche` (administrador) y `monderas` (grupo `Monderas`; recreada el
   10-11-2026 tras un borrado desde la UI). Contraseñas en `CREDENCIALES.md`.
-- **Apps habilitadas (48):** Calendar, Contacts, Mail, Tasks, Forms, Polls, Photos, Activity,
-  **Notes, Cospend, Bookmarks, Picker, Admin Cockpit** (19-11-2026) + núcleo (Files, DAV, Sharing,
+- **Apps habilitadas (49):** Calendar, Contacts, Mail, Tasks, Forms, Polls, Photos, Activity,
+  **Notes, Cospend, Bookmarks, Picker, Admin Cockpit, Tables** (19-11-2026) + núcleo (Files, DAV, Sharing,
   Versiones, Papelera, Visor, Texto, Talk, OnlyOffice, Equipos, groupfolders, External sites...).
   **Eliminadas (10-11-2026):** `richdocuments` (notes/bookmarks/spreed reinstaladas;
   `deck` instalada y eliminada de nuevo el 19-11-2026, tablas `oc_deck_*` limpiadas).
